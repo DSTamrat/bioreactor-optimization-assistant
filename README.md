@@ -1,8 +1,8 @@
-# &nbsp;             **Bioreactor Optimization Assistant**
+#               **Bioreactor Optimization Assistant**
 
-######            ***End‑to‑End Machine Learning \& Anomaly Detection Pipeline for Bioprocess Monitoring***
+###### ***End‑to‑End Machine Learning \& Anomaly Detection Pipeline for Bioprocess Monitoring***
 
-## &nbsp; 1. Introduction
+##   1. Introduction
 
 
 
@@ -38,7 +38,7 @@
 
 
 
-## &nbsp;2. Project Objectives
+##  2. Project Objectives
 
 ##### Build an end‑to‑end ML pipeline for bioreactor optimization
 
@@ -124,7 +124,7 @@
 
 #### 4.3 Machine Learning Model
 
-#### &nbsp;  RandomForestRegressor
+####    RandomForestRegressor
 
 
 
@@ -257,7 +257,25 @@ Dashboards revealed clear biological patterns
 
 
 
-#### 11\. Next Steps
+
+
+#### 11.How to access the App:
+
+
+
+\#  **Bioreactor Optimization Assistant Live App: https://web-production-b844.up.railway.app This project is an interactive Streamlit application that helps explore and optimize bioreactor performance using data-driven methods.**
+
+
+
+ **## Features - Upload and explore bioreactor data - Visualize trends with interactive charts -** 
+
+ **## Apply basic machine learning models (e.g., scikit-learn) - Support for common scientific Python libraries (pandas, numpy, matplotlib, seaborn)** 
+
+ **## Tech Stack - Python - Streamlit - pandas, numpy - scikit-learn - Deployed on Railway (auto-deploy from GitHub)**
+
+
+
+#### 12\. Next Steps
 
 
 
