@@ -7,29 +7,41 @@ from pathlib import Path
 # -------------------------------------------------
 # Fix Python path so Streamlit Cloud can find /src
 # -------------------------------------------------
-sys.path.append(str(Path(__file__).resolve().parents[1]))
+ROOT = Path(__file__).resolve().parents[1]
+SRC_PATH = ROOT / "src"
 
+if str(ROOT) not in sys.path:
+    sys.path.append(str(ROOT))
+
+# Now safe to import
 from src.anomaly_detection import detect_anomalies, explain_anomalies
 
 # -------------------------------------------------
 # Paths
 # -------------------------------------------------
-ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "bioreactor_synthetic_1000rows.csv"
-
-# FIXED: Correct model path (no "models" folder)
 MODEL_PATH = ROOT / "src" / "feed_model.joblib"
 
 # -------------------------------------------------
-# Load data and model
+# Load data and model (with safety checks)
 # -------------------------------------------------
 @st.cache_data
 def load_data():
+    if not DATA_PATH.exists():
+        st.error(f"Data file not found: {DATA_PATH}")
+        st.stop()
     return pd.read_csv(DATA_PATH)
 
 @st.cache_resource
 def load_model():
-    return joblib.load(MODEL_PATH)
+    if not MODEL_PATH.exists():
+        st.error(f"Model file not found: {MODEL_PATH}")
+        st.stop()
+    try:
+        return joblib.load(MODEL_PATH)
+    except Exception as e:
+        st.error(f"Error loading model: {e}")
+        st.stop()
 
 df = load_data()
 model = load_model()
@@ -48,6 +60,12 @@ features = [
     "agitation_rpm",
     "airflow_slpm"
 ]
+
+# Check if required columns exist
+missing_cols = [col for col in features if col not in df.columns]
+if missing_cols:
+    st.error(f"Missing required columns in dataset: {missing_cols}")
+    st.stop()
 
 # -------------------------------------------------
 # Feed Recommendation Logic
@@ -74,6 +92,10 @@ def recommend_feed(row, model):
 # Streamlit UI
 # -------------------------------------------------
 st.title("AI-Generated Bioreactor Optimization Assistant")
+
+if "batch_id" not in df.columns:
+    st.error("Column 'batch_id' not found in dataset.")
+    st.stop()
 
 batch_ids = df["batch_id"].unique()
 selected_batch = st.selectbox("Select batch", batch_ids)
@@ -111,6 +133,3 @@ for _, row in df_batch_flags.iterrows():
 
 df_recs = pd.DataFrame(recs)
 st.dataframe(df_recs)
-
-
-
